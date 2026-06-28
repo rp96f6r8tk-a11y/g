@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🔮 Simulatore Pricing Cartomanzia</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #1a0533 0%, #2d1b4e 50%, #1a0533 100%);
+      min-height: 100vh;
+      color: #e8d5ff;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      font-size: 1.8rem;
+      color: #d4a8ff;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+    .subtitle { text-align: center; color: #9b7ec8; margin-bottom: 30px; font-size: 0.9rem; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+
+    .card {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(212,168,255,0.2);
+      border-radius: 16px;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+    }
+    .card h2 {
+      font-size: 1rem;
+      color: #d4a8ff;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 1px solid rgba(212,168,255,0.2);
+      padding-bottom: 8px;
+    }
+
+    label { display: block; font-size: 0.85rem; color: #b89fd4; margin-bottom: 4px; margin-top: 12px; }
+    input, select {
+      width: 100%;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(212,168,255,0.3);
+      border-radius: 8px;
+      color: #e8d5ff;
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+    input:focus, select:focus { border-color: #d4a8ff; }
+    select option { background: #2d1b4e; }
+
+    button {
+      width: 100%;
+      margin-top: 14px;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary { background: linear-gradient(135deg, #7c3aed, #a855f7); color: #fff; }
+    .btn-primary:hover { background: linear-gradient(135deg, #6d28d9, #9333ea); transform: translateY(-1px); }
+    .btn-success { background: linear-gradient(135deg, #059669, #10b981); color: #fff; }
+    .btn-success:hover { background: linear-gradient(135deg, #047857, #059669); transform: translateY(-1px); }
+    .btn-danger  { background: linear-gradient(135deg, #dc2626, #ef4444); color: #fff; }
+    .btn-danger:hover  { background: linear-gradient(135deg, #b91c1c, #dc2626); transform: translateY(-1px); }
+    .btn-warn   { background: linear-gradient(135deg, #d97706, #f59e0b); color: #fff; }
+    button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    /* DASHBOARD STATO */
+    .status-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .stat-box {
+      background: rgba(0,0,0,0.3);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+    }
+    .stat-label { font-size: 0.75rem; color: #9b7ec8; margin-bottom: 4px; }
+    .stat-value { font-size: 1.4rem; font-weight: 700; color: #d4a8ff; }
+    .stat-value.green  { color: #34d399; }
+    .stat-value.yellow { color: #fbbf24; }
+    .stat-value.red    { color: #f87171; }
+
+    /* RATE BADGE */
+    .rate-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+    }
+    .rate-promo { background: rgba(52,211,153,0.2); color: #34d399; border: 1px solid #34d399; }
+    .rate-full  { background: rgba(248,113,113,0.2); color: #f87171; border: 1px solid #f87171; }
+
+    /* CRONOMETRO SESSIONE */
+    .timer-display {
+      text-align: center;
+      font-size: 3rem;
+      font-weight: 700;
+      color: #d4a8ff;
+      font-family: monospace;
+      margin: 12px 0;
+    }
+    .timer-cost {
+      text-align: center;
+      font-size: 1rem;
+      color: #9b7ec8;
+      margin-bottom: 10px;
+    }
+
+    /* LOG */
+    #log {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(212,168,255,0.15);
+      border-radius: 10px;
+      padding: 12px;
+      height: 260px;
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 0.8rem;
+      line-height: 1.6;
+    }
+    .log-info    { color: #93c5fd; }
+    .log-success { color: #34d399; }
+    .log-warn    { color: #fbbf24; }
+    .log-error   { color: #f87171; }
+    .log-event   { color: #d4a8ff; font-weight: bold; }
+
+    .span-full { grid-column: 1 / -1; }
+    .api-url {
+      background: rgba(0,0,0,0.4);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-family: monospace;
+      font-size: 0.8rem;
+      color: #93c5fd;
+      margin-top: 8px;
+      word-break: break-all;
+    }
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-right: 4px;
+    }
+    .tag-get  { background: #1d4ed8; color: #fff; }
+    .tag-post { background: #047857; color: #fff; }
+  </style>
+</head>
+<body>
+
+<h1>🔮 Simulatore Pricing Cartomanzia</h1>
+<p class="subtitle">Testa l'algoritmo di pricing in tempo reale — collegato alle API locali</p>
+
+<div class="grid">
+
+  <!-- ── SETUP UTENTE ── -->
+  <div class="card">
+    <h2>1. Crea Utente</h2>
+    <label>ID Utente (opzionale)</label>
+    <input id="userId" placeholder="generato automaticamente">
+    <label>Tariffa Consulente (€/min)</label>
+    <input id="consultantRate" type="number" step="0.10" value="1.50" min="0.50">
+    <button class="btn-primary" onclick="createUser()">Crea Utente</button>
+  </div>
+
+  <!-- ── PRIMA RICARICA ── -->
+  <div class="card">
+    <h2>2. Prima Ricarica</h2>
+    <label>Pacchetto</label>
+    <select id="packageId">
+      <option value="10">€10 + 7 min bonus → Credito totale €16.93</option>
+      <option value="30">€30 + 20 min bonus → Credito totale €49.80</option>
+      <option value="50">€50 + 30 min bonus → Credito totale €79.70</option>
+    </select>
+    <p style="font-size:0.8rem; color:#9b7ec8; margin-top:8px;">
+      Include 7 minuti di benvenuto. Tariffa promo €0.99/min per tutto il credito.
+    </p>
+    <button class="btn-success" onclick="firstRecharge()">Applica Prima Ricarica</button>
+  </div>
+
+  <!-- ── STATO UTENTE ── -->
+  <div class="card">
+    <h2>Stato Corrente</h2>
+
+    <div style="text-align:center; margin-bottom:10px;">
+      <span id="rateBadge" class="rate-badge rate-promo">€0.99/min PROMO</span>
+    </div>
+
+    <div class="status-grid">
+      <div class="stat-box">
+        <div class="stat-label">Saldo Totale</div>
+        <div class="stat-value green" id="totalBalance">—</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Saldo Promo</div>
+        <div class="stat-value yellow" id="promoBalance">—</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Prima Ricarica</div>
+        <div class="stat-value" id="firstRechargeDone">—</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Promo Attiva</div>
+        <div class="stat-value" id="isPromoActive">—</div>
+      </div>
+    </div>
+
+    <button class="btn-warn" onclick="refreshState()" style="margin-top:0;">Aggiorna Stato</button>
+  </div>
+
+  <!-- ── SIMULATORE SESSIONE ── -->
+  <div class="card">
+    <h2>Simulatore Sessione</h2>
+
+    <div class="timer-display" id="timerDisplay">00:00</div>
+    <div class="timer-cost" id="timerCost">Costo sessione: €0.0000</div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+      <button class="btn-success" id="btnStart" onclick="startSession()">▶ Avvia</button>
+      <button class="btn-danger"  id="btnEnd"   onclick="endSession()" disabled>■ Termina</button>
+    </div>
+    <button class="btn-primary" onclick="fastForward()" id="btnFast" disabled style="margin-top:8px;">
+      ⏩ Avanza 5 minuti (test rapido)
+    </button>
+
+    <label style="margin-top:14px;">Ricarica successiva (€)</label>
+    <input id="rechargeAmount" type="number" value="20" min="1">
+    <button class="btn-warn" onclick="subsequentRecharge()">+ Ricarica</button>
+  </div>
+
+  <!-- ── LOG ── -->
+  <div class="card span-full">
+    <h2>Log Evento</h2>
+    <div id="log"><span class="log-info">Pronto. Crea un utente per iniziare.</span></div>
+  </div>
+
+  <!-- ── ENDPOINT API ── -->
+  <div class="card span-full">
+    <h2>Endpoint API (per integrazione piattaforma)</h2>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:0.85rem;">
+      <div>
+        <div class="api-url"><span class="tag tag-post">POST</span>/api/users</div>
+        <div class="api-url"><span class="tag tag-post">POST</span>/api/users/:id/first-recharge</div>
+        <div class="api-url"><span class="tag tag-post">POST</span>/api/users/:id/recharge</div>
+      </div>
+      <div>
+        <div class="api-url"><span class="tag tag-post">POST</span>/api/sessions/start</div>
+        <div class="api-url"><span class="tag tag-post">POST</span>/api/sessions/:id/bill</div>
+        <div class="api-url"><span class="tag tag-post">POST</span>/api/sessions/:id/end</div>
+      </div>
+      <div>
+        <div class="api-url"><span class="tag tag-get">GET</span> /api/users/:id</div>
+        <div class="api-url"><span class="tag tag-get">GET</span> /api/packages</div>
+      </div>
+      <div>
+        <div class="api-url"><span class="tag tag-get">GET</span> /api/sessions/:id</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const BASE = '';  // stessa origin
+  let currentUserId = null;
+  let currentSessionId = null;
+  let sessionInterval = null;
+  let sessionSeconds = 0;
+  let sessionCost = 0;
+
+  // ─── LOG ─────────────────────────────────────────────────────────────────
+  function log(msg, cls = 'log-info') {
+    const el = document.getElementById('log');
+    const line = document.createElement('div');
+    line.className = cls;
+    const time = new Date().toLocaleTimeString('it-IT');
+    line.textContent = `[${time}] ${msg}`;
+    el.appendChild(line);
+    el.scrollTop = el.scrollHeight;
+  }
+
+  // ─── API HELPER ──────────────────────────────────────────────────────────
+  async function api(method, path, body) {
+    const opts = { method, headers: { 'Content-Type': 'application/json' } };
+    if (body) opts.body = JSON.stringify(body);
+    const r = await fetch(BASE + path, opts);
+    const data = await r.json();
+    if (!data.success) throw new Error(data.error);
+    return data;
+  }
+
+  // ─── AGGIORNA UI STATO ───────────────────────────────────────────────────
+  function updateStateUI(state) {
+    document.getElementById('totalBalance').textContent = `€${state.totalBalance.toFixed(4)}`;
+    document.getElementById('promoBalance').textContent = `€${state.promoBalance.toFixed(4)}`;
+    document.getElementById('firstRechargeDone').textContent = state.isFirstRechargeDone ? 'Sì' : 'No';
+    document.getElementById('isPromoActive').textContent = state.isPromoActive ? 'Attiva' : 'Esaurita';
+
+    const badge = document.getElementById('rateBadge');
+    if (state.isPromoActive) {
+      badge.textContent = `€${state.displayRate}/min PROMO`;
+      badge.className = 'rate-badge rate-promo';
+    } else if (state.isFirstRechargeDone) {
+      badge.textContent = `€${state.displayRate}/min TARIFFA PIENA`;
+      badge.className = 'rate-badge rate-full';
+    } else {
+      badge.textContent = '—';
+      badge.className = 'rate-badge';
+    }
+  }
+
+  // ─── CREA UTENTE ─────────────────────────────────────────────────────────
+  async function createUser() {
+    try {
+      const uid = document.getElementById('userId').value.trim() || undefined;
+      const data = await api('POST', '/api/users', { userId: uid });
+      currentUserId = data.userId;
+      document.getElementById('userId').value = currentUserId;
+      updateStateUI(data.state);
+      log(`✔ Utente creato: ${currentUserId}`, 'log-success');
+    } catch (e) { log(`✘ ${e.message}`, 'log-error'); }
+  }
+
+  // ─── PRIMA RICARICA ──────────────────────────────────────────────────────
+  async function firstRecharge() {
+    if (!currentUserId) return log('Prima crea un utente!', 'log-warn');
+    try {
+      const packageId = document.getElementById('packageId').value;
+      const consultantRate = parseFloat(document.getElementById('consultantRate').value);
+      const data = await api('POST', `/api/users/${currentUserId}/first-recharge`, { packageId, consultantRate });
+      updateStateUI(data.state);
+      log(`🎁 ${data.result.message}`, 'log-event');
+      log(`Credito promo: €${data.state.promoBalance.toFixed(2)} | Tariffa: €0.99/min`, 'log-success');
+    } catch (e) { log(`✘ ${e.message}`, 'log-error'); }
+  }
+
+  // ─── AGGIORNA STATO ──────────────────────────────────────────────────────
+  async function refreshState() {
+    if (!currentUserId) return log('Prima crea un utente!', 'log-warn');
+    try {
+      const data = await api('GET', `/api/users/${currentUserId}`);
+      updateStateUI(data.state);
+      log(`Stato aggiornato`, 'log-info');
+    } catch (e) { log(`✘ ${e.message}`, 'log-error'); }
+  }
+
+  // ─── AVVIA SESSIONE ──────────────────────────────────────────────────────
+  async function startSession() {
+    if (!currentUserId) return log('Prima crea un utente!', 'log-warn');
+    try {
+      const consultantRate = parseFloat(document.getElementById('consultantRate').value);
+      const data = await api('POST', '/api/sessions/start', {
+        userId: currentUserId,
+        consultantId: 'consulente-1',
+        consultantRate,
+      });
+      currentSessionId = data.sessionId;
+      sessionSeconds = 0;
+      sessionCost = 0;
+
+      document.getElementById('btnStart').disabled = true;
+      document.getElementById('btnEnd').disabled = false;
+      document.getElementById('btnFast').disabled = false;
+
+      log(`▶ Sessione avviata: ${data.message}`, 'log-event');
+
+      // Tick ogni secondo
+      sessionInterval = setInterval(async () => {
+        await billTick(1);
+      }, 1000);
+
+    } catch (e) { log(`✘ ${e.message}`, 'log-error'); }
+  }
+
+  // ─── TICK DI ADDEBITO ────────────────────────────────────────────────────
+  async function billTick(seconds) {
+    if (!currentSessionId) return;
+    try {
+      const consultantRate = parseFloat(document.getElementById('consultantRate').value);
+      const data = await api('POST', `/api/sessions/${currentSessionId}/bill`, { seconds });
+      sessionSeconds += seconds;
+      sessionCost += data.billing.charged;
+
+      updateTimerDisplay();
+      updateStateUI(data.state);
+      document.getElementById('timerCost').textContent = `Costo sessione: €${sessionCost.toFixed(4)}`;
+
+      if (data.billing.rateChanged) {
+        log(`⚡ CAMBIO TARIFFA! €${data.billing.previousRate}/min → €${data.billing.newRate}/min`, 'log-warn');
+        log(`Credito promo esaurito. Da ora tariffa piena.`, 'log-warn');
+      }
+
+      if (data.state.totalBalance <= 0) {
+        log('⚠ Credito esaurito, sessione terminata automaticamente.', 'log-warn');
+        await endSession();
+      }
+    } catch (e) {
+      log(`✘ Errore addebito: ${e.message}`, 'log-error');
+      clearInterval(sessionInterval);
+    }
+  }
+
+  // ─── AVANZA VELOCE (5 MINUTI) ────────────────────────────────────────────
+  async function fastForward() {
+    if (!currentSessionId) return;
+    clearInterval(sessionInterval);
+    log('⏩ Avanzo di 5 minuti...', 'log-info');
+    await billTick(300);
+    sessionInterval = setInterval(async () => { await billTick(1); }, 1000);
+  }
+
+  // ─── TERMINA SESSIONE ────────────────────────────────────────────────────
+  async function endSession() {
+    if (!currentSessionId) return;
+    clearInterval(sessionInterval);
+    try {
+      const data = await api('POST', `/api/sessions/${currentSessionId}/end`, {});
+      log(`■ Sessione terminata | Durata: ${data.summary.durationFormatted} | Totale: €${data.summary.totalCharged}`, 'log-success');
+      updateStateUI(data.state);
+    } catch (e) { log(`✘ ${e.message}`, 'log-error'); }
+
+    currentSessionId = null;
+    document.getElementById('btnStart').disabled = false;
+    document.getElementById('btnEnd').disabled = true;
+    document.getElementById('btnFast').disabled = true;
+  }
+
+  // ─── RICARICA SUCCESSIVA ─────────────────────────────────────────────────
+  async function subsequentRecharge() {
+    if (!currentUserId) return log('Prima crea un utente!', 'log-warn');
+    try {
+      const amount = parseFloat(document.getElementById('rechargeAmount').value);
+      const data = await api('POST', `/api/users/${currentUserId}/recharge`, { amount });
+      updateStateUI(data.state);
+      log(`💳 Ricarica di €${amount} applicata | Saldo: €${data.result.totalBalance.toFixed(2)} | Tariffa: €${data.result.displayRate}/min`, 'log-success');
+    } catch (e) { log(`✘ ${e.message}`, 'log-error'); }
+  }
+
+  // ─── TIMER DISPLAY ───────────────────────────────────────────────────────
+  function updateTimerDisplay() {
+    const m = String(Math.floor(sessionSeconds / 60)).padStart(2, '0');
+    const s = String(sessionSeconds % 60).padStart(2, '0');
+    document.getElementById('timerDisplay').textContent = `${m}:${s}`;
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "tarot-pricing-algorithm",
+  "version": "1.0.0",
+  "description": "Algoritmo di pricing per piattaforma di cartomanzia",
+  "main": "src/engine.js",
+  "scripts": {
+    "start": "node src/api.js",
+    "dev": "node --watch src/api.js",
+    "test": "node test/engine.test.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "uuid": "^9.0.0"
+  }
+}
