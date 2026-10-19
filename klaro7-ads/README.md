@@ -6,6 +6,8 @@ Due creatività per la promo "Giorno Klaro7", realizzate con Remotion e con lo s
 |---|---|---|
 | `export/giorno-klaro7-reel.mp4` | 1080×1920, 10 s, 30 fps, H.264 | Reels / Storie Facebook e Instagram |
 | `export/giorno-klaro7-post.png` | 1080×1350 (4:5) | Feed Instagram / Facebook |
+| `export/giorno-klaro7-reel-v2.mp4` | 1080×1920, 10 s, 30 fps, H.264 | Versione 2 — Reels / Storie |
+| `export/giorno-klaro7-post-v2.png` | 1080×1350 (4:5) | Versione 2 — Feed |
 
 Testi a schermo in **Cormorant Garamond** (font locali in `public/fonts`, cifre allineate). Il video non usa voce: tutti i messaggi sono già a schermo, perché su Meta la maggior parte dei video viene vista senza audio. Nel video testi e CTA stanno nella safe zone dei Reels (né nel 14% in alto né nel 35% in basso).
 
@@ -23,6 +25,19 @@ Testi a schermo in **Cormorant Garamond** (font locali in `public/fonts`, cifre 
 
 Il numero 7 si ripete volutamente (giorno 7, 7 minuti, Klaro7): un unico simbolo facile da ricordare, che si lega al nome del brand.
 
+## Versione 2 — blocchi di colore, massima leggibilità
+Stessi colori e font del brand, ma senza l'impostazione dell'hero della piattaforma: fondi pieni (indaco, menta, arancio), una sola idea per schermata, testi molto grandi e scuri su chiaro o bianchi su scuro. Codice in `src/v2/`.
+
+| Tempo | Scena | Fondo |
+|---|---|---|
+| 0–2 s | Un calendario a palette scatta 3→4→5→6→**7**: "Segna questa data." | Indaco |
+| 2–3,8 s | "Ogni 7 del mese è il Giorno Klaro7" | Menta |
+| 3,8–6 s | "Hai ricaricato oltre 100€ il mese scorso? **7 minuti in regalo**, il 7 di ogni mese" | Arancio |
+| 6–7,9 s | "Prima volta su Klaro7? **7 minuti GRATIS** alla tua prima consulenza" | Menta |
+| 7,9–10 s | Logo, "Il tuo 7 ti aspetta.", CTA "Scopri i consulenti →", note legali | Indaco |
+
+Il calendario fa da gancio: il movimento che si ferma sul 7 attira l'occhio nel primo secondo e fissa la data in mente. Ogni offerta ha un colore suo, così chi guarda capisce subito che sono due vantaggi distinti.
+
 ## Copy consigliato per Ads Manager
 **Testo principale**
 > Il 7 non è un giorno qualsiasi. ✨
@@ -37,7 +52,7 @@ Il numero 7 si ripete volutamente (giorno 7, 7 minuti, Klaro7): un unico simbolo
 ```bash
 npm install
 npm run studio        # anteprima interattiva
-npm run render        # esporta video e post in out/
+npm run render        # esporta tutte le versioni in out/ (singole: render:video-v2, render:post-v2, …)
 ```
 Se Remotion non riesce a scaricare Chrome, aggiungi `--browser-executable=<percorso di chrome headless>`.
 Testi e note legali: `src/brand.ts` (`copy`) e i componenti in `src/Video.tsx` / `src/Post.tsx`.

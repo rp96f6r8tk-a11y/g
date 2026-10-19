@@ -2,7 +2,7 @@ import React from 'react';
 import {brand, sans} from '../brand';
 
 // Wordmark ricostruito dal logo Klaro7 (cerchio arancio/ciano). Sostituibile con il file ufficiale.
-export const Logo: React.FC<{size?: number}> = ({size = 64}) => (
+export const Logo: React.FC<{size?: number; color?: string}> = ({size = 64, color = brand.white}) => (
 	<div style={{display: 'flex', alignItems: 'center', gap: size * 0.25}}>
 		<div
 			style={{
@@ -19,7 +19,7 @@ export const Logo: React.FC<{size?: number}> = ({size = 64}) => (
 				fontWeight: 800,
 				fontSize: size * 0.62,
 				letterSpacing: size * 0.04,
-				color: brand.white,
+				color,
 			}}
 		>
 			KLARO<span style={{color: brand.orange}}>7</span>

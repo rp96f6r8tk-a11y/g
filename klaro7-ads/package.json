@@ -6,7 +6,9 @@
     "studio": "remotion studio src/index.ts",
     "render:video": "remotion render src/index.ts GiornoKlaro7Video out/giorno-klaro7-reel.mp4",
     "render:post": "remotion still src/index.ts GiornoKlaro7Post out/giorno-klaro7-post.png",
-    "render": "npm run render:video && npm run render:post"
+    "render:video-v2": "remotion render src/index.ts GiornoKlaro7VideoV2 out/giorno-klaro7-reel-v2.mp4",
+    "render:post-v2": "remotion still src/index.ts GiornoKlaro7PostV2 out/giorno-klaro7-post-v2.png",
+    "render": "npm run render:video && npm run render:post && npm run render:video-v2 && npm run render:post-v2"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.536",

@@ -11,6 +11,8 @@ export const brand = {
 	cyanSoft: 'rgba(63, 227, 234, 0.35)',
 	orange: '#ec7a24',
 	orangeLight: '#ff9a45',
+	// Arancio più scuro per testi su fondo chiaro (contrasto migliore).
+	orangeText: '#d45f0e',
 	gold: '#ffd38a',
 	goldDeep: '#f2a94b',
 	mint: '#e9f6f6',
