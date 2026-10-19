@@ -12,7 +12,7 @@ export const GiornoKlaro7Post: React.FC = () => (
 		<CosmicBackground still glyphOpacity={0.55} waveY={[0.08, 0.62]} />
 		<AbsoluteFill style={{padding: '56px 64px 44px', display: 'flex', flexDirection: 'column'}}>
 			<div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-				<Logo size={52} />
+				<Logo size={90} />
 				<div
 					style={{
 						padding: '8px 24px',

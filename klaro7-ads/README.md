@@ -8,6 +8,8 @@ Due creatività per la promo "Giorno Klaro7", realizzate con Remotion e con lo s
 | `export/giorno-klaro7-post.png` | 1080×1350 (4:5) | Feed Instagram / Facebook |
 | `export/giorno-klaro7-reel-v2.mp4` | 1080×1920, 10 s, 30 fps, H.264 | Versione 2 — Reels / Storie |
 | `export/giorno-klaro7-post-v2.png` | 1080×1350 (4:5) | Versione 2 — Feed |
+| `export/giorno-klaro7-reel-v3.mp4` | 1080×1920, 10 s, 30 fps, H.264 | **Versione 3 (consigliata)** — Reels / Storie |
+| `export/giorno-klaro7-post-v3.png` | 1080×1350 (4:5) | **Versione 3 (consigliata)** — Feed |
 
 Testi a schermo in **Cormorant Garamond** (font locali in `public/fonts`, cifre allineate). Il video non usa voce: tutti i messaggi sono già a schermo, perché su Meta la maggior parte dei video viene vista senza audio. Nel video testi e CTA stanno nella safe zone dei Reels (né nel 14% in alto né nel 35% in basso).
 
@@ -38,6 +40,24 @@ Stessi colori e font del brand, ma senza l'impostazione dell'hero della piattafo
 
 Il calendario fa da gancio: il movimento che si ferma sul 7 attira l'occhio nel primo secondo e fissa la data in mente. Ogni offerta ha un colore suo, così chi guarda capisce subito che sono due vantaggi distinti.
 
+## Versione 3 — il logo come linguaggio visivo (consigliata)
+Le forme del logo Klaro7 (mezzo disco ciano, mandorla arancio con pupilla ciano) diventano gli elementi grafici di tutta l'inserzione. Codice in `src/v3/`.
+
+- **Fondo**: indaco profondo con una luce ciano e una arancio che respirano, particelle luminose e una grana leggera, per dare profondità senza togliere leggibilità.
+- **Transizione di marca**: il mezzo disco ciano, con il bordo arancio, attraversa lo schermo tra una scena e l'altra (circa mezzo secondo).
+- **Offerte**: card in vetro satinato con barra colorata (arancio per il cashback, ciano per i nuovi iscritti) e "7" in arancio sfumato.
+
+| Tempo | Scena |
+|---|---|
+| 0–2,2 s | Il simbolo del logo si compone attorno a un grande 7: "Segna la data · Ogni mese c'è un giorno tutto per te." |
+| 2,2–4,2 s | Logo Klaro7 + "Il 7 di ogni mese è il Giorno Klaro7 — Il nostro modo di dirti grazie." |
+| 4,2–6,3 s | Card cashback: "Hai ricaricato oltre 100€ il mese scorso? 7 minuti in regalo." |
+| 6,3–8,3 s | Card nuovi iscritti: "Prima volta su Klaro7? 7 minuti gratis." |
+| 8,3–10 s | Logo, "Il tuo 7 ti aspetta.", CTA "Scopri i consulenti →", note legali |
+
+### Logo
+`src/components/Logo.tsx` è una ricostruzione vettoriale del logo, ricavata dal marchio visibile sulla piattaforma (lo usano tutte le versioni). Per usare il file ufficiale, mettilo in `public/` (es. `public/logo.svg`) e sostituisci l'SVG del componente con `<Img src={staticFile('logo.svg')} />`.
+
 ## Copy consigliato per Ads Manager
 **Testo principale**
 > Il 7 non è un giorno qualsiasi. ✨
@@ -56,4 +76,3 @@ npm run render        # esporta tutte le versioni in out/ (singole: render:video
 ```
 Se Remotion non riesce a scaricare Chrome, aggiungi `--browser-executable=<percorso di chrome headless>`.
 Testi e note legali: `src/brand.ts` (`copy`) e i componenti in `src/Video.tsx` / `src/Post.tsx`.
-Il logo in `src/components/Logo.tsx` è una ricostruzione del wordmark: si può sostituire con il file ufficiale (SVG/PNG in `public/`).

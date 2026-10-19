@@ -8,6 +8,8 @@ export const brand = {
 	navbar: '#3a2d6e',
 	violet: '#5b3fa6',
 	cyan: '#3fe3ea',
+	// Ciano più profondo del mezzo disco nel logo.
+	teal: '#1fa8b1',
 	cyanSoft: 'rgba(63, 227, 234, 0.35)',
 	orange: '#ec7a24',
 	orangeLight: '#ff9a45',

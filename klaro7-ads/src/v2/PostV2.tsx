@@ -53,7 +53,7 @@ export const GiornoKlaro7PostV2: React.FC = () => (
 			>
 				7
 			</div>
-			<Logo size={50} />
+			<Logo size={90} />
 			<div style={{display: 'flex', alignItems: 'center', gap: 50, marginTop: 34}}>
 				<FlipCalendar width={300} />
 				<div>

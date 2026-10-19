@@ -226,7 +226,7 @@ const EndCard: React.FC = () => {
 	return (
 		<>
 			<div style={{position: 'absolute', top: 300, left: 0, right: 0, display: 'flex', justifyContent: 'center', opacity: logo, transform: `scale(${0.8 + logo * 0.2})`}}>
-				<Logo size={110} />
+				<Logo size={150} />
 			</div>
 			<Stack top={480} gap={4}>
 				<Line at={E + 8} style={{fontSize: 110, color: brand.white}}>

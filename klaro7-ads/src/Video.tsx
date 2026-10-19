@@ -238,7 +238,7 @@ const CloseScene: React.FC = () => {
 					transform: `translateY(${(1 - logo) * 40}px)`,
 				}}
 			>
-				<Logo size={84} />
+				<Logo size={110} />
 			</div>
 			<div
 				style={{
