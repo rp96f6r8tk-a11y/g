@@ -1,0 +1,22 @@
+{
+  "name": "klaro7-giorno-del-7",
+  "private": true,
+  "description": "Inserzioni Meta 'Il Giorno Klaro7' (video 9:16 + post Instagram 4:5) realizzate con Remotion",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render:video": "remotion render src/index.ts GiornoKlaro7Video out/giorno-klaro7-reel.mp4",
+    "render:post": "remotion still src/index.ts GiornoKlaro7Post out/giorno-klaro7-post.png",
+    "render": "npm run render:video && npm run render:post"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.536",
+    "@remotion/fonts": "^4.0.536",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "remotion": "^4.0.536"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.0",
+    "typescript": "^5.8.3"
+  }
+}
